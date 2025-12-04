@@ -1,0 +1,301 @@
+/* Updated: 2025-12-04T10:42:31.408Z */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Shadcn/UI colors - adapted for dark theme */
+  --color-background: #0A0A14;
+  --color-foreground: #FFFFFF; /* text-primary */
+
+  --color-card: #1A1A2E; /* bg-tertiary */
+  --color-card-foreground: #FFFFFF;
+
+  --color-popover: #1E1E32; /* bg-elevated */
+  --color-popover-foreground: #FFFFFF;
+
+  --color-primary: #8B5CF6; /* accent-purple */
+  --color-primary-foreground: #FFFFFF;
+
+  --color-secondary: #1A1A2E; /* bg-tertiary */
+  --color-secondary-foreground: #B8B8C8; /* text-secondary */
+
+  --color-muted: #1A1A2E; /* bg-tertiary */
+  --color-muted-foreground: #7A7A8E; /* text-tertiary */
+
+  --color-accent: #D946EF; /* accent-magenta */
+  --color-accent-foreground: #FFFFFF;
+
+  --color-destructive: #EF4444; /* error */
+  --color-destructive-foreground: #FFFFFF;
+
+  --color-border: rgba(255, 255, 255, 0.08); /* border-subtle */
+  --color-input: #1E1E32; /* bg-elevated */
+  --color-ring: #8B5CF6; /* accent-purple for focus rings */
+
+  --color-chart-1: #8B5CF6; /* accent-purple */
+  --color-chart-2: #06B6D4; /* accent-cyan */
+  --color-chart-3: #D946EF; /* accent-magenta */
+  --color-chart-4: #F59E0B; /* warning */
+  --color-chart-5: #EF4444; /* error */
+
+  --color-sidebar: #0D0D1F; /* bg-secondary */
+  --color-sidebar-foreground: #B8B8C8;
+  --color-sidebar-primary: #8B5CF6;
+  --color-sidebar-primary-foreground: #FFFFFF;
+  --color-sidebar-accent: #1A1A2E;
+  --color-sidebar-accent-foreground: #FFFFFF;
+  --color-sidebar-border: rgba(255, 255, 255, 0.08);
+  --color-sidebar-ring: #8B5CF6;
+
+  --radius-lg: 0.75rem; /* 12px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-sm: 0.25rem; /* 4px */
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  /* Custom Design Tokens */
+  --color-bg-primary: #0A0A14;
+  --color-bg-secondary: #0D0D1F;
+  --color-bg-tertiary: #1A1A2E;
+  --color-bg-elevated: #1E1E32;
+
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B8B8C8;
+  --color-text-tertiary: #7A7A8E;
+
+  --color-accent-purple: #8B5CF6;
+  --color-accent-magenta: #D946EF;
+  --color-accent-cyan: #06B6D4;
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-glow: rgba(139, 92, 246, 0.3);
+
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Roboto Mono', monospace;
+}
+
+/*
+  The default border color has changed to currentColor in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-border);
+  }
+}
+
+@layer base {
+  :root {
+    /* Shadcn/UI variables */
+    --background: var(--color-bg-primary);
+    --foreground: var(--color-text-primary);
+    --card: var(--color-bg-tertiary);
+    --card-foreground: var(--color-text-primary);
+    --popover: var(--color-bg-elevated);
+    --popover-foreground: var(--color-text-primary);
+    --primary: var(--color-accent-purple);
+    --primary-foreground: var(--color-text-primary);
+    --secondary: var(--color-bg-tertiary);
+    --secondary-foreground: var(--color-text-secondary);
+    --muted: var(--color-bg-tertiary);
+    --muted-foreground: var(--color-text-tertiary);
+    --accent: var(--color-accent-magenta);
+    --accent-foreground: var(--color-text-primary);
+    --destructive: var(--color-error);
+    --destructive-foreground: var(--color-text-primary);
+    --border: var(--color-border-subtle);
+    --input: var(--color-bg-elevated);
+    --ring: var(--color-accent-purple);
+    --chart-1: var(--color-chart-1);
+    --chart-2: var(--color-chart-2);
+    --chart-3: var(--color-chart-3);
+    --chart-4: var(--color-chart-4);
+    --chart-5: var(--color-chart-5);
+    --radius: var(--radius-md); /* Default radius for shadcn components */
+    --sidebar-background: var(--color-bg-secondary);
+    --sidebar-foreground: var(--color-text-secondary);
+    --sidebar-primary: var(--color-accent-purple);
+    --sidebar-primary-foreground: var(--color-text-primary);
+    --sidebar-accent: var(--color-bg-tertiary);
+    --sidebar-accent-foreground: var(--color-text-primary);
+    --sidebar-border: var(--color-border-subtle);
+    --sidebar-ring: var(--color-accent-purple);
+  }
+
+  /* Typography */
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-inter);
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-inter);
+    color: var(--color-text-primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-size: 3rem; /* 48px */
+    line-height: 1.2;
+  }
+
+  .h1-hero {
+    font-size: 4rem; /* 64px */
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2.25rem; /* 36px */
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 1.75rem; /* 28px */
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  h4 {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .body-lg {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .body {
+    font-size: 1rem; /* 16px */
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .body-sm {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .caption {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.4;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .button-lg {
+    font-size: 1rem; /* 16px */
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .button {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .badge {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* Container classes */
+  .container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem; /* 16px */
+    padding-right: 1rem; /* 16px */
+  }
+
+  .container-lg {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .container-md {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .container-sm {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@layer utilities {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Hide Next.js error overlay portal */
+nextjs-portal {
+  display: none !important;
+}
