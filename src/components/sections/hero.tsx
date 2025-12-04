@@ -2,9 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import GlowingButton from '@/components/ui/glowing-button';
-import StarAnimation from '@/components/ui/star-animation';
-import BeamEffect from '@/components/ui/beam-effect';
 
 const logos = [
   'QNB',
@@ -37,53 +34,55 @@ export default function Hero() {
           .animate-scroll {
             animation: scroll 40s linear infinite;
           }
+          @keyframes spin-slow {
+            to {
+              transform: rotate(360deg);
+            }
+          }
         `}
       </style>
       <section className="relative bg-[#0A0A14] overflow-hidden pt-36 pb-24 font-inter">
         {/* Background Elements */}
         <div className="absolute inset-0 z-0">
-          <StarAnimation density={150} className="opacity-40" />
           <Image
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/d210cff1-e8a1-474d-983a-9d851ca47735-wope-com/assets/images/hero-background-lights-13.png"
             alt="Background lights"
-            fill
-            className="object-cover opacity-50"
+            layout="fill"
+            objectFit="cover"
             priority
+            className="opacity-50"
           />
           <Image
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/d210cff1-e8a1-474d-983a-9d851ca47735-wope-com/assets/images/hero-background-top-12.png"
             alt="Background geometry top"
-            fill
-            className="object-contain object-top"
+            layout="fill"
+            objectFit="contain"
+            objectPosition="top"
             priority
           />
           <Image
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/d210cff1-e8a1-474d-983a-9d851ca47735-wope-com/assets/images/hero-background-bottom-1.png"
             alt="Background geometry bottom"
-            fill
-            className="object-cover object-bottom"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="bottom"
             priority
           />
         </div>
 
         {/* Main Content */}
         <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center">
-          {/* Title with beam effect */}
-          <div className="relative">
-            <BeamEffect variant="radial" color="purple" className="scale-150 opacity-60" />
-            <h1
-              className="relative z-10 text-white max-w-4xl"
-              style={{
-                fontSize: '72px',
-                lineHeight: 1.1,
-                letterSpacing: '-0.02em',
-                fontWeight: 900,
-              }}
-            >
-              New Era of SEO Research
-            </h1>
-          </div>
-
+          <h1
+            className="text-white max-w-4xl"
+            style={{
+              fontSize: '72px',
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              fontWeight: 900,
+            }}
+          >
+            New Era of SEO Research
+          </h1>
           <p
             className="mt-6 max-w-3xl text-[#b3b3b3]"
             style={{ fontSize: '20px' }}
@@ -92,37 +91,30 @@ export default function Hero() {
             hidden keyword opportunities and get clear & actionable insights
           </p>
 
-          {/* Button with beam effect */}
-          <div className="relative mt-10">
-            <BeamEffect variant="spotlight" color="multi" className="scale-[2] opacity-40" />
-            <GlowingButton size="lg" className="relative z-10">
-              Unlimited trial for 14 days
-            </GlowingButton>
+          <div className="mt-10">
+            <a
+              href="#"
+              className="relative group inline-block p-px rounded-full font-medium text-white shadow-lg shadow-purple-500/30"
+            >
+              <span className="absolute inset-[-1px] rounded-full bg-transparent group-hover:bg-[conic-gradient(from_180deg_at_50%_50%,#D946EF_0deg,#8B5CF6_180deg,#D946EF_360deg)] animate-[spin-slow_4s_linear_infinite]"></span>
+              <span className="relative z-10 flex items-center justify-center px-8 py-3 bg-[#0a0a14] rounded-full backdrop-blur-sm">
+                Unlimited trial for 14 days
+              </span>
+            </a>
           </div>
 
-          {/* Preview image with beam effect */}
-          <div className="relative mt-20 w-full max-w-5xl mx-auto">
-            <BeamEffect variant="vertical" color="purple" className="h-[120%] -top-[10%]" />
-            <div className="relative z-10 rounded-2xl p-px bg-gradient-to-b from-white/10 to-transparent shadow-[0_0_60px_rgba(139,92,246,0.2)]">
-              <div className="bg-[#0D0D1F] rounded-[15px] p-2 relative overflow-hidden">
-                {/* Beam glow around image */}
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-600/20 via-transparent to-transparent" />
-                <div className="absolute -inset-20 bg-gradient-radial from-purple-600/30 via-transparent to-transparent blur-3xl opacity-50" />
-                
+          <div className="mt-20 w-full max-w-5xl mx-auto">
+            <div className="relative rounded-2xl p-px bg-gradient-to-b from-white/10 to-transparent shadow-[0_0_60px_rgba(139,92,246,0.2)]">
+              <div className="bg-[#0D0D1F] rounded-[15px] p-2">
                 <Image
                   src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/d210cff1-e8a1-474d-983a-9d851ca47735-wope-com/assets/images/hero-video-desktop-preview-2.png"
                   width={1097}
                   height={631}
                   alt="Keyword Finder interface preview"
-                  className="relative z-10 rounded-lg w-full h-auto"
+                  className="rounded-lg w-full h-auto"
                   priority
                 />
               </div>
-            </div>
-            
-            {/* Bottom beam effect */}
-            <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[150%] h-40 pointer-events-none">
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/30 via-purple-600/10 to-transparent blur-2xl" />
             </div>
           </div>
 

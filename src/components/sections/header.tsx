@@ -4,7 +4,59 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Plus, Minus, Menu as MenuIcon, User, Building, Handshake, Share2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import GlowingButton from "@/components/ui/glowing-button";
+
+const AnimationStyles = () => (
+  // Keyframes and custom classes for the glowing effect.
+  // In a real project, this would live in tailwind.config.js or a global CSS file.
+  <style>{`
+    @keyframes borderRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes twinkle {
+      0% { transform: scale(0.5) translate(0,0); opacity: 0.5; }
+      25% { transform: scale(1) translate(5px, 5px); opacity: 1; }
+      50% { transform: scale(0.5) translate(10px, 0); opacity: 0.5; }
+      75% { transform: scale(1) translate(5px, -5px); opacity: 1; }
+      100% { transform: scale(0.5) translate(0,0); opacity: 0.5; }
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 40px -10px rgba(139, 92, 246, 0.3); }
+      50% { box-shadow: 0 0 60px -10px rgba(139, 92, 246, 0.5); }
+    }
+    .glowing-box-stars {
+      background-image: 
+        radial-gradient(1px 1px at 20% 20%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(1px 1px at 50% 70%, white, transparent),
+        radial-gradient(1px 1px at 90% 90%, white, transparent),
+        radial-gradient(1px 1px at 10% 80%, white, transparent),
+        radial-gradient(1px 1px at 75% 55%, white, transparent),
+        radial-gradient(1px 1px at 33% 40%, white, transparent);
+      animation: twinkle 30s linear infinite;
+    }
+    .glowing-box-borders {
+      background: conic-gradient(from 180deg at 50% 50%, rgba(255, 255, 255, 0) 0deg, #8B5CF6 180deg, rgba(255, 255, 255, 0) 360deg);
+      animation: borderRotate 6s linear infinite;
+    }
+    .glowing-box-glow {
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+  `}</style>
+);
+
+const GlowingBox = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return (
+    <div className={cn("glowing-box relative inline-block rounded-full p-px overflow-hidden", className)}>
+      <div className="absolute inset-0 -z-20 glowing-box-glow" />
+      <div className="absolute inset-[-300%] w-[500%] h-[500%] -z-10 glowing-box-borders" />
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-[-200%] w-[400%] h-[400%] glowing-box-stars" />
+      </div>
+      {children}
+    </div>
+  );
+};
 
 const WopeLogo = () => (
   <Link href="/" aria-label="Homepage" className="text-white font-bold text-[28px] leading-none tracking-[-0.05em]">
@@ -37,6 +89,7 @@ export default function Header() {
 
   return (
     <>
+      <AnimationStyles />
       <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-[#0A0118]/80 backdrop-blur-lg border-b border-white/5">
         <div className="container h-full flex items-center justify-between">
           <WopeLogo />
@@ -61,21 +114,27 @@ export default function Header() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-x-4">
-            <GlowingButton variant="ghost">
+            <button className="text-sm font-medium text-text-primary px-6 py-2.5 rounded-full border border-white/20 hover:bg-white/10 transition-colors">
               Log in
-            </GlowingButton>
-            <GlowingButton>
-              Sign up
-            </GlowingButton>
+            </button>
+            <GlowingBox>
+              <button className="relative z-10 text-white text-sm font-medium px-6 py-2.5 bg-bg-primary rounded-full hover:bg-opacity-80 transition-opacity">
+                Sign up
+              </button>
+            </GlowingBox>
           </div>
 
           <div className="lg:hidden">
-            <GlowingButton onClick={() => setIsMenuOpen(true)}>
-              <div className="flex items-center gap-1.5">
-                <MenuIcon className="w-5 h-5" />
-                Menu
-              </div>
-            </GlowingButton>
+            <GlowingBox>
+                <button 
+                  onClick={() => setIsMenuOpen(true)}
+                  className="relative z-10 w-[88px] h-10 flex items-center justify-center gap-1 text-white text-sm font-medium bg-bg-primary rounded-full"
+                  aria-label="Open menu"
+                >
+                    <MenuIcon className="w-5 h-5" />
+                    Menu
+                </button>
+            </GlowingBox>
           </div>
         </div>
       </header>
@@ -115,12 +174,14 @@ export default function Header() {
             </nav>
 
             <div className="flex flex-col gap-y-4">
-              <GlowingButton variant="ghost" className="w-full">
+              <button className="w-full text-base font-medium text-text-primary py-3 rounded-full border border-white/20 hover:bg-white/10 transition-colors">
                 Log in
-              </GlowingButton>
-              <GlowingButton className="w-full">
-                Sign up
-              </GlowingButton>
+              </button>
+              <GlowingBox className="w-full">
+                <button className="w-full relative z-10 text-white text-base font-medium py-3 bg-bg-primary rounded-full hover:bg-opacity-80 transition-opacity">
+                  Sign up
+                </button>
+              </GlowingBox>
             </div>
           </div>
         </div>

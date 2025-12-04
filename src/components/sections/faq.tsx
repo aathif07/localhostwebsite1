@@ -9,8 +9,6 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { Plus, Minus } from "lucide-react";
-import StarAnimation from "@/components/ui/star-animation";
-import BeamEffect from "@/components/ui/beam-effect";
 
 const faqData = [
   {
@@ -46,10 +44,23 @@ const FaqSection = () => {
       id="faq"
       className="relative bg-background py-20 lg:py-32 overflow-hidden"
     >
-      <div className="absolute inset-0 z-0">
-        <StarAnimation density={150} className="opacity-20" />
-        <BeamEffect variant="radial" color="purple" className="opacity-20" />
-      </div>
+      <div
+        className="absolute inset-0 z-0 h-full w-full"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse 1px 1px at 30% 40%, white, transparent),
+            radial-gradient(ellipse 1px 1px at 70% 20%, white, transparent),
+            radial-gradient(ellipse 1px 1px at 80% 80%, white, transparent),
+            radial-gradient(ellipse 2px 2px at 10% 90%, white, transparent),
+            radial-gradient(ellipse 1px 1px at 50% 60%, white, transparent),
+            radial-gradient(ellipse 1px 1px at 90% 10%, white, transparent),
+            radial-gradient(ellipse 1px 1px at 20% 15%, white, transparent),
+            radial-gradient(ellipse 1px 1px at 60% 85%, white, transparent)
+          `,
+          backgroundSize: '400px 400px',
+          opacity: 0.1,
+        }}
+      />
       <div className="relative z-10 mx-auto max-w-[960px] px-4">
         <div className="mb-12 flex flex-col items-center text-center lg:mb-16">
           <div className="mb-4 inline-block rounded-full bg-white/5 py-1.5 px-3 text-xs font-semibold uppercase tracking-wider text-purple-400 border border-white/10">
@@ -59,7 +70,7 @@ const FaqSection = () => {
             Frequently asked questions
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-text-secondary">
-            Haven't found what you're looking for?{" "}
+            Haven’t found what you’re looking for?{" "}
             <Link
               href="/contact-us"
               className="text-accent-purple hover:underline"
