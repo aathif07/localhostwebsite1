@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import StarAnimation from '@/components/ui/star-animation';
 
 const logos = [
   'QNB',
@@ -44,6 +45,7 @@ export default function Hero() {
       <section className="relative bg-[#0A0A14] overflow-hidden pt-36 pb-24 font-inter">
         {/* Background Elements */}
         <div className="absolute inset-0 z-0">
+          <StarAnimation density={0.0001} />
           <Image
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/d210cff1-e8a1-474d-983a-9d851ca47735-wope-com/assets/images/hero-background-lights-13.png"
             alt="Background lights"

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Star {
   x: number;
@@ -10,18 +11,24 @@ interface Star {
   twinkleSpeed: number;
   twinkleOffset: number;
   color: string;
+  vx: number;
+  vy: number;
+  opacityDirection: number;
+  radius: number;
 }
 
 interface StarAnimationProps {
   density?: number;
   colors?: string[];
   speed?: number;
+  className?: string;
 }
 
 export default function StarAnimation({
-  density = 100,
+  density = 0.0001,
   colors = ["#FFFFFF", "#3B82F6", "#06B6D4", "#3B82F6"],
   speed = 0.5,
+  className,
 }: StarAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameId = useRef<number>();
@@ -36,6 +43,13 @@ export default function StarAnimation({
 
     let width = 0;
     let height = 0;
+
+    const hexToRgb = (hex: string): string | null => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result
+        ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+        : null;
+    };
 
     const init = () => {
       const parent = canvas.parentElement;
@@ -52,18 +66,22 @@ export default function StarAnimation({
 
       ctx.scale(dpr, dpr);
 
-      const numStars = Math.floor(width * height * density);
+      const numStars = Math.floor((width * height * density) / 1000);
       starsRef.current = [];
 
       for (let i = 0; i < numStars; i++) {
         starsRef.current.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          size: Math.random() * 1 + 0.5, // Results in a diameter of 1px to 3px
+          size: Math.random() * 2 + 1,
+          radius: Math.random() * 1.5 + 0.5,
           color: colors[Math.floor(Math.random() * colors.length)],
-          opacity: Math.random() * 0.7 + 0.1, // Opacity from 0.1 to 0.8
+          opacity: Math.random() * 0.7 + 0.1,
           twinkleSpeed: Math.random() * 0.015 + 0.005,
-          twinkleOffset: Math.random() * 0.5,
+          twinkleOffset: Math.random() * Math.PI * 2,
+          vx: (Math.random() - 0.5) * speed * 0.1,
+          vy: (Math.random() - 0.5) * speed * 0.1,
+          opacityDirection: Math.random() > 0.5 ? 1 : -1,
         });
       }
     };
@@ -86,7 +104,6 @@ export default function StarAnimation({
         star.opacity += star.opacityDirection * star.twinkleSpeed;
         if (star.opacity > 0.8 || star.opacity < 0.1) {
           star.opacityDirection *= -1;
-          // Clamp to prevent overshooting
           star.opacity = Math.max(0.1, Math.min(0.8, star.opacity));
         }
 
