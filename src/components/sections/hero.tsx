@@ -96,7 +96,7 @@ export default function Hero() {
               href="#"
               className="relative group inline-block p-px rounded-full font-medium text-white shadow-lg shadow-purple-500/30"
             >
-              <span className="absolute inset-[-1px] rounded-full bg-transparent group-hover:bg-[conic-gradient(from_180deg_at_50%_50%,#D946EF_0deg,#8B5CF6_180deg,#D946EF_360deg)] animate-[spin-slow_4s_linear_infinite]"></span>
+              <span className="absolute inset-[-1px] rounded-full bg-transparent group-hover:bg-[conic-gradient(from_180deg_at_50%_50%,#D946EF_0deg,#3B82F6_180deg,#D946EF_360deg)] animate-[spin-slow_4s_linear_infinite]"></span>
               <span className="relative z-10 flex items-center justify-center px-8 py-3 bg-[#0a0a14] rounded-full backdrop-blur-sm">
                 Unlimited trial for 14 days
               </span>

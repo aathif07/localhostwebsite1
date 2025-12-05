@@ -21,8 +21,8 @@ const AnimationStyles = () => (
       100% { transform: scale(0.5) translate(0,0); opacity: 0.5; }
     }
     @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 40px -10px rgba(139, 92, 246, 0.3); }
-      50% { box-shadow: 0 0 60px -10px rgba(139, 92, 246, 0.5); }
+      0%, 100% { box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.3); }
+      50% { box-shadow: 0 0 60px -10px rgba(59, 130, 246, 0.5); }
     }
     .glowing-box-stars {
       background-image: 
@@ -36,7 +36,7 @@ const AnimationStyles = () => (
       animation: twinkle 30s linear infinite;
     }
     .glowing-box-borders {
-      background: conic-gradient(from 180deg at 50% 50%, rgba(255, 255, 255, 0) 0deg, #8B5CF6 180deg, rgba(255, 255, 255, 0) 360deg);
+      background: conic-gradient(from 180deg at 50% 50%, rgba(255, 255, 255, 0) 0deg, #3B82F6 180deg, rgba(255, 255, 255, 0) 360deg);
       animation: borderRotate 6s linear infinite;
     }
     .glowing-box-glow {

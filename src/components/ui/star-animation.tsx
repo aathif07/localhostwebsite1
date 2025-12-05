@@ -44,7 +44,7 @@ export interface StarAnimationProps {
 const StarAnimation: React.FC<StarAnimationProps> = ({
   className,
   density = 0.00012,
-  colors = ["#FFFFFF", "#8B5CF6", "#D946EF", "#06B6D4"],
+  colors = ["#FFFFFF", "#3B82F6", "#D946EF", "#06B6D4"],
   speed = 0.05,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

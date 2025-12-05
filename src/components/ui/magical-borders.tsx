@@ -39,9 +39,9 @@ export default function MagicalBorders({
   borderRadius = 'var(--radius-lg, 12px)',
   glowIntensity = 0.3,
   gradientColors = [
-    'var(--color-accent-purple, #8B5CF6)',
-    'var(--color-accent-magenta, #D946EF)',
-    'var(--color-accent-cyan, #06B6D4)',
+    'var(--color-accent-purple, #3B82F6)',
+    'rgba(217, 70, 239, 0.8)',
+    'rgba(6, 182, 212, 0.8)',
   ],
   ...props
 }: MagicalBordersProps) {
