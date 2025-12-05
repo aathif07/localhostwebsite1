@@ -17,11 +17,23 @@ interface Star {
   radius: number;
 }
 
+interface ShootingStar {
+  x: number;
+  y: number;
+  length: number;
+  speed: number;
+  angle: number;
+  opacity: number;
+  life: number;
+  maxLife: number;
+}
+
 interface StarAnimationProps {
   density?: number;
   colors?: string[];
   speed?: number;
   className?: string;
+  showShootingStars?: boolean;
 }
 
 export default function StarAnimation({
@@ -29,10 +41,13 @@ export default function StarAnimation({
   colors = ["#FFFFFF", "#3B82F6", "#06B6D4", "#3B82F6"],
   speed = 0.5,
   className,
+  showShootingStars = true,
 }: StarAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameId = useRef<number>();
   const starsRef = useRef<Star[]>([]);
+  const shootingStarsRef = useRef<ShootingStar[]>([]);
+  const lastShootingStarTime = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,6 +64,20 @@ export default function StarAnimation({
       return result
         ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
         : null;
+    };
+
+    const createShootingStar = () => {
+      const angle = Math.random() * Math.PI / 4 + Math.PI / 6; // 30-75 degrees
+      shootingStarsRef.current.push({
+        x: Math.random() * width,
+        y: -50,
+        length: Math.random() * 80 + 60,
+        speed: Math.random() * 3 + 4,
+        angle: angle,
+        opacity: 1,
+        life: 0,
+        maxLife: Math.random() * 60 + 40,
+      });
     };
 
     const init = () => {
@@ -86,9 +115,10 @@ export default function StarAnimation({
       }
     };
 
-    const animate = () => {
+    const animate = (timestamp: number) => {
       ctx.clearRect(0, 0, width, height);
 
+      // Draw twinkling stars
       starsRef.current.forEach((star) => {
         // Update drift position
         star.x += star.vx;
@@ -117,6 +147,62 @@ export default function StarAnimation({
         }
       });
 
+      // Create shooting stars periodically
+      if (showShootingStars) {
+        if (timestamp - lastShootingStarTime.current > 3000 + Math.random() * 4000) {
+          createShootingStar();
+          lastShootingStarTime.current = timestamp;
+        }
+
+        // Update and draw shooting stars
+        shootingStarsRef.current = shootingStarsRef.current.filter((star) => {
+          star.life += 1;
+          star.x += Math.cos(star.angle) * star.speed;
+          star.y += Math.sin(star.angle) * star.speed;
+
+          // Fade out at the end of life
+          if (star.life > star.maxLife * 0.7) {
+            star.opacity = Math.max(0, 1 - (star.life - star.maxLife * 0.7) / (star.maxLife * 0.3));
+          }
+
+          // Remove if out of bounds or life expired
+          if (star.x > width + 100 || star.y > height + 100 || star.life > star.maxLife) {
+            return false;
+          }
+
+          // Draw shooting star with gradient trail
+          const gradient = ctx.createLinearGradient(
+            star.x,
+            star.y,
+            star.x - Math.cos(star.angle) * star.length,
+            star.y - Math.sin(star.angle) * star.length
+          );
+          
+          gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`);
+          gradient.addColorStop(0.3, `rgba(59, 130, 246, ${star.opacity * 0.8})`);
+          gradient.addColorStop(0.6, `rgba(6, 182, 212, ${star.opacity * 0.4})`);
+          gradient.addColorStop(1, `rgba(59, 130, 246, 0)`);
+
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(star.x, star.y);
+          ctx.lineTo(
+            star.x - Math.cos(star.angle) * star.length,
+            star.y - Math.sin(star.angle) * star.length
+          );
+          ctx.stroke();
+
+          // Draw bright head
+          ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          return true;
+        });
+      }
+
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
@@ -125,7 +211,7 @@ export default function StarAnimation({
         cancelAnimationFrame(animationFrameId.current);
       }
       init();
-      animate();
+      animate(0);
     });
 
     if (canvas.parentElement) {
@@ -133,7 +219,7 @@ export default function StarAnimation({
     }
 
     init();
-    animate();
+    animate(0);
 
     return () => {
       if (animationFrameId.current) {
@@ -143,7 +229,7 @@ export default function StarAnimation({
         resizeObserver.unobserve(canvas.parentElement);
       }
     };
-  }, [density, colors, speed]);
+  }, [density, colors, speed, showShootingStars]);
 
   return (
     <canvas
