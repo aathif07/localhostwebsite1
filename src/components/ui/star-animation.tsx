@@ -1,52 +1,28 @@
-"use client";
+'use client';
 
-import React, { useRef, useEffect } from "react";
-
-// Assuming a `cn` utility for classnames is available, as is standard in shadcn/ui projects.
-// If not, this can be replaced with a simple string concatenation.
-const cn = (...classes: (string | undefined | null | false)[]) =>
-  classes.filter(Boolean).join(" ");
-
-/**
- * Converts a hex color string to an an RGB string "r, g, b".
- * Returns null if the hex is invalid.
- */
-const hexToRgb = (hex: string): string | null => {
-  if (!hex) return null;
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
-        result[3],
-        16,
-      )}`
-    : null;
-};
+import { useEffect, useRef } from 'react';
 
 interface Star {
   x: number;
   y: number;
-  radius: number;
-  color: string;
+  size: number;
   opacity: number;
   twinkleSpeed: number;
-  opacityDirection: number;
-  vx: number;
-  vy: number;
+  twinkleOffset: number;
+  color: string;
 }
 
-export interface StarAnimationProps {
-  className?: string;
+interface StarAnimationProps {
   density?: number;
-  colors?: readonly string[];
+  colors?: string[];
   speed?: number;
 }
 
-const StarAnimation: React.FC<StarAnimationProps> = ({
-  className,
-  density = 0.00012,
-  colors = ["#FFFFFF", "#3B82F6", "#D946EF", "#06B6D4"],
-  speed = 0.05,
-}) => {
+export default function StarAnimation({
+  density = 100,
+  colors = ["#FFFFFF", "#3B82F6", "#06B6D4", "#3B82F6"],
+  speed = 0.5,
+}: StarAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameId = useRef<number>();
   const starsRef = useRef<Star[]>([]);
@@ -83,13 +59,11 @@ const StarAnimation: React.FC<StarAnimationProps> = ({
         starsRef.current.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          radius: Math.random() * 1 + 0.5, // Results in a diameter of 1px to 3px
+          size: Math.random() * 1 + 0.5, // Results in a diameter of 1px to 3px
           color: colors[Math.floor(Math.random() * colors.length)],
           opacity: Math.random() * 0.7 + 0.1, // Opacity from 0.1 to 0.8
           twinkleSpeed: Math.random() * 0.015 + 0.005,
-          opacityDirection: Math.random() > 0.5 ? 1 : -1,
-          vx: (Math.random() - 0.5) * speed,
-          vy: (Math.random() - 0.5) * speed,
+          twinkleOffset: Math.random() * 0.5,
         });
       }
     };
@@ -163,6 +137,4 @@ const StarAnimation: React.FC<StarAnimationProps> = ({
       )}
     />
   );
-};
-
-export default StarAnimation;
+}

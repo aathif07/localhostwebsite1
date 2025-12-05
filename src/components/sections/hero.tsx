@@ -94,9 +94,9 @@ export default function Hero() {
           <div className="mt-10">
             <a
               href="#"
-              className="relative group inline-block p-px rounded-full font-medium text-white shadow-lg shadow-purple-500/30"
+              className="relative group inline-block p-px rounded-full font-medium text-white shadow-lg shadow-blue-500/30"
             >
-              <span className="absolute inset-[-1px] rounded-full bg-transparent group-hover:bg-[conic-gradient(from_180deg_at_50%_50%,#D946EF_0deg,#3B82F6_180deg,#D946EF_360deg)] animate-[spin-slow_4s_linear_infinite]"></span>
+              <span className="absolute inset-[-1px] rounded-full bg-transparent group-hover:bg-[conic-gradient(from_180deg_at_50%_50%,#3B82F6_0deg,#06B6D4_180deg,#3B82F6_360deg)] animate-[spin-slow_4s_linear_infinite]"></span>
               <span className="relative z-10 flex items-center justify-center px-8 py-3 bg-[#0a0a14] rounded-full backdrop-blur-sm">
                 Unlimited trial for 14 days
               </span>
@@ -104,7 +104,7 @@ export default function Hero() {
           </div>
 
           <div className="mt-20 w-full max-w-5xl mx-auto">
-            <div className="relative rounded-2xl p-px bg-gradient-to-b from-white/10 to-transparent shadow-[0_0_60px_rgba(139,92,246,0.2)]">
+            <div className="relative rounded-2xl p-px bg-gradient-to-b from-white/10 to-transparent shadow-[0_0_60px_rgba(59,130,246,0.2)]">
               <div className="bg-[#0D0D1F] rounded-[15px] p-2">
                 <Image
                   src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/d210cff1-e8a1-474d-983a-9d851ca47735-wope-com/assets/images/hero-video-desktop-preview-2.png"
