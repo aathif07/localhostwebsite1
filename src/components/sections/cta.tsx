@@ -109,7 +109,7 @@ const CtaSection = () => {
               Outrank Everyone. Starting Now.
             </h2>
             <p className="mx-auto mt-6 max-w-lg text-base text-text-secondary lg:text-lg">
-              Wope analyzes millions of data points to deliver predictive insights.
+              LocalHost analyzes millions of data points to deliver predictive insights.
             </p>
 
             <form className="mt-12 w-full max-w-xl" onSubmit={(e) => e.preventDefault()}>

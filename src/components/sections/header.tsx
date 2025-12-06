@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown, Plus, Minus, Menu as MenuIcon, User, Building, Handshake, Share2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -58,17 +58,19 @@ const GlowingBox = ({ children, className }: { children: React.ReactNode; classN
   );
 };
 
-const WopeLogo = () => (
+const LocalHostLogo = () => (
   <Link href="/" aria-label="Homepage" className="text-white font-bold text-[28px] leading-none tracking-[-0.05em]">
-    wope
+    LocalHost
   </Link>
 );
 
 const dropdownItems = [
-  { href: "/for-agencies", title: "Wope for Agencies", description: "Grow your startup with wope.", Icon: Building },
-  { href: "/for-startups", title: "Wope for Startups", description: "Seamless Agency Solutions.", Icon: User },
-  { href: "/partnership", title: "Partnership", description: "Grow together with Wope!", Icon: Handshake },
-  { href: "/affiliate", title: "Affiliate", description: "Start, share and earn with Wope.", Icon: Share2 },
+  { href: "/web-development", title: "Web Development", description: "Modern web solutions", Icon: Building },
+  { href: "/mobile-development", title: "Mobile App Development", description: "iOS & Android apps", Icon: User },
+  { href: "/cloud-devops", title: "Cloud & DevOps", description: "Infrastructure & deployment", Icon: Handshake },
+  { href: "/ai-ml", title: "AI & Machine Learning", description: "AI-powered solutions", Icon: Share2 },
+  { href: "/ui-ux", title: "UI/UX Design", description: "Beautiful user experiences", Icon: Building },
+  { href: "/app-revamps", title: "Application Revamps", description: "Modernize your apps", Icon: User },
 ];
 
 const DropdownItem = ({ href, title, description, Icon }: (typeof dropdownItems)[0]) => (
@@ -86,18 +88,49 @@ const DropdownItem = ({ href, title, description, Icon }: (typeof dropdownItems)
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isResourcesOpen, setIsResourcesOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Show header when scrolling up or at the top
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        setIsVisible(true);
+      } 
+      // Hide header when scrolling down (only after scrolling past 80px)
+      else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setIsVisible(false);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
 
   return (
     <>
       <AnimationStyles />
-      <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-[#0A0118]/80 backdrop-blur-lg border-b border-white/5">
+      <header 
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 h-20 bg-[#0A0118]/80 backdrop-blur-lg border-b border-white/5 transition-transform duration-300 ease-in-out",
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        )}
+      >
         <div className="container h-full flex items-center justify-between">
-          <WopeLogo />
+          <LocalHostLogo />
           
           <nav className="hidden lg:flex items-center gap-x-8">
+            <Link href="/" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors">Home</Link>
             <div className="group relative">
               <button className="flex items-center gap-x-1 text-base font-medium text-text-secondary hover:text-text-primary transition-colors">
-                Resources
+                Services
                 <ChevronDown className="w-4 h-4 text-text-secondary group-hover:text-text-primary transition-transform group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 hidden group-hover:block w-[520px]">
@@ -108,18 +141,16 @@ export default function Header() {
                 </div>
               </div>
             </div>
-            <Link href="#" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors">Pricing</Link>
-            <Link href="#" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors">Download</Link>
-            <Link href="#" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors">Contact Us</Link>
+            <Link href="#" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors">Work / Portfolio</Link>
+            <Link href="#" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors">About Us</Link>
+            <Link href="#" className="text-base font-medium text-text-secondary hover:text-primary transition-colors">Technical Partnership</Link>
+            <Link href="#" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors">Careers</Link>
           </nav>
 
           <div className="hidden lg:flex items-center gap-x-4">
-            <button className="text-sm font-medium text-text-primary px-6 py-2.5 rounded-full border border-white/20 hover:bg-white/10 transition-colors">
-              Log in
-            </button>
             <GlowingBox>
               <button className="relative z-10 text-white text-sm font-medium px-6 py-2.5 bg-bg-primary rounded-full hover:bg-opacity-80 transition-opacity">
-                Sign up
+                Contact
               </button>
             </GlowingBox>
           </div>
@@ -143,7 +174,7 @@ export default function Header() {
         <div className="lg:hidden fixed inset-0 bg-bg-primary z-50">
           <div className="container h-full flex flex-col pt-5 pb-8">
             <div className="flex justify-between items-center h-20 -mt-5">
-              <WopeLogo />
+              <LocalHostLogo />
               <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu" className="p-2">
                 <X className="w-6 h-6 text-text-secondary" />
               </button>
@@ -151,9 +182,10 @@ export default function Header() {
 
             <nav className="flex-grow mt-8">
               <ul className="space-y-6">
+                <li><Link href="/" className="text-lg font-medium text-text-primary">Home</Link></li>
                 <li>
                   <button onClick={() => setIsResourcesOpen(!isResourcesOpen)} className="w-full flex justify-between items-center text-lg font-medium text-text-primary">
-                    Resources
+                    Services
                     {isResourcesOpen ? <Minus className="w-5 h-5"/> : <Plus className="w-5 h-5"/>}
                   </button>
                   {isResourcesOpen && (
@@ -167,19 +199,17 @@ export default function Header() {
                     </div>
                   )}
                 </li>
-                <li><Link href="#" className="text-lg font-medium text-text-primary">Pricing</Link></li>
-                <li><Link href="#" className="text-lg font-medium text-text-primary">Download</Link></li>
-                <li><Link href="#" className="text-lg font-medium text-text-primary">Contact Us</Link></li>
+                <li><Link href="#" className="text-lg font-medium text-text-primary">Work / Portfolio</Link></li>
+                <li><Link href="#" className="text-lg font-medium text-text-primary">About Us</Link></li>
+                <li><Link href="#" className="text-lg font-medium text-text-primary">Technical Partnership</Link></li>
+                <li><Link href="#" className="text-lg font-medium text-text-primary">Careers</Link></li>
               </ul>
             </nav>
 
             <div className="flex flex-col gap-y-4">
-              <button className="w-full text-base font-medium text-text-primary py-3 rounded-full border border-white/20 hover:bg-white/10 transition-colors">
-                Log in
-              </button>
               <GlowingBox className="w-full">
                 <button className="w-full relative z-10 text-white text-base font-medium py-3 bg-bg-primary rounded-full hover:bg-opacity-80 transition-opacity">
-                  Sign up
+                  Contact
                 </button>
               </GlowingBox>
             </div>
